@@ -1,0 +1,22 @@
+{
+  "name": "cointrend",
+  "version": "1.0.0",
+  "description": "Plot miningpoolhub balance trend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qmshao/cointrend.git"
+  },
+  "author": "Quan Min Shao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qmshao/cointrend/issues"
+  },
+  "homepage": "https://github.com/qmshao/cointrend#readme",
+  "dependencies": {
+    "csv-write-stream": "^2.0.0"
+  }
+}
