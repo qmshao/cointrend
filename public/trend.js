@@ -4,7 +4,7 @@ window.onload = function() {
 
     var TimeStamp = ""
 
-    var socket = io();
+    var socket = io('',{path: '/trendio/socket.io'});
     
     socket.on('connected', function (data){
         console.log(data);

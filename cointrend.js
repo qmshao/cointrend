@@ -1,30 +1,34 @@
 const express = require("express");
 const fs = require("fs");
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server, {path: '/trendio'});
+
+
 const webport = 3701;
 const webpath = '/trend/';
 
 const info = require( './app/infoupdate' );
-const DT = 2;
+const DT = 30;
 const MAXLEN = 24*3600/DT;
 
 
 /* Express Server */
 app.get(webpath+"*", function(req, res){
-    //console.log(req.query.room);
+    //console.log(req.path);
     var path = req.path.slice(webpath.length);
-    if (path.indexOf('.')<0){
-      path = "index.html";
+    if (path.indexOf('.') < 0) {
+        path = "index.html";
     }
-    //console.log(__dirname +"/public/"+path);
-    res.sendFile(__dirname +"/public/"+path);
+    res.sendFile(__dirname + "/public/" + path);
   });
 
-var io = require('socket.io').listen(app.listen(webport));
+server.listen(webport);
+
 console.log("Listening on port " + webport +" in path "+webpath);
 
 /* socket.io Server */
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
     console.log('a user connected');
     socket.emit('connected',MAXLEN);
 

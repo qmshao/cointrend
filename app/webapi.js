@@ -15,6 +15,7 @@ var options = {
 callWebAPI = function(host, path, callback){
   options['host'] = host;
   options['path'] = path;
+  //console.log(options);
   var req = https.request(options, (res) => {
     
     var jsonStr = '';
@@ -25,7 +26,7 @@ callWebAPI = function(host, path, callback){
 
 
     res.on('end', () => {
-      var jsonObject = JSON.parse(jsonStr);
+      var jsonObject = JSON.parse(jsonStr)
       callback(jsonObject);
     });
   });

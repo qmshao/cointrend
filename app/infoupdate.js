@@ -45,7 +45,7 @@ var getTotalBalance = function(callback){
       convType[i] = Bal[i]['coin'];
     }
     coinprice(convType, (conv)=>{
-      //console.log(conv);
+      console.log(conv);
       var ae_price = conv[ae_cointype]['price'];
       var total = 0;
       for (i=0; i<Bal.length; i++){
@@ -53,9 +53,9 @@ var getTotalBalance = function(callback){
         //console.log(convType[i]);
         //console.log(conv[convType[i]]);
         total += (Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed'])  
-                /(conv[convType[i]]['price']/ae_price);
+                *(conv[convType[i]]['price']/ae_price);
       }
-      console.log(total);
+      //console.log(total);
       callback(total);
     });
   });

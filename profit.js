@@ -8,6 +8,12 @@ var AlgoList = [];
 var CurrProfit = [];
 var N; // Number of website coins
 
+request('https://min-api.cryptocompare.com/data/price?fsym=LTC&tsyms=USD,LTC,ETH,XZC,ZEN,BTG', function(err, resp, html){
+	console.log(html);
+	console.log(err);
+});
+
+
 updateProfit = function(){
   request('https://miningpoolhub.com/?page=home&normalize=nvidia', function(err, resp, html) {
     var profit = {};

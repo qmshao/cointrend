@@ -1,14 +1,14 @@
 function extendPlot(data){
   var plotDiv = document.getElementById('PlotDiv');
   //console.log(data);
-  console.log(MAXLEN);
+  //console.log(MAXLEN);
   Plotly.extendTraces(plotDiv , {x:[[data.t]],y:[[data.x]]}, [0],MAXLEN);
 }
 
 function initPlot(data) {
   var plotDiv = document.getElementById('PlotDiv');
   
-  console.log(data);
+  //console.log(data);
   var trace1 = {
     type: "scatter",
     mode: "lines",
