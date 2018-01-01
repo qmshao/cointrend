@@ -1,5 +1,4 @@
 var webapi = require( './webapi' );
-var coinprice = require('./coinprice');
 
 const apikey = '902ab3ea71ce808b0bdc31a1c7b8abffc37942e767e3be2584a6bd5b04d74a06';
 
@@ -35,6 +34,14 @@ var MPHpath = function(action){
     return ('/index.php?page=api&action='+ action + '&api_key='+apikey);
 }
 
+var Pricehost = 'min-api.cryptocompare.com';
+var Pricepath = function(ae_cointype, convType){
+    var path = '/data/price?fsym='+coins[ae_cointype]['code'] + '&tsyms=USD';
+    for (i=0; i<convType.length; i++){
+        path = path + ','+ convType[i];
+    }
+    return path;
+}
 
 var getTotalBalance = function(callback){
   var action = 'getuserallbalances';
@@ -42,18 +49,15 @@ var getTotalBalance = function(callback){
     var Bal = res[action]['data'];
     var convType = [];
     for (i=0; i<Bal.length; i++){
-      convType[i] = Bal[i]['coin'];
+      convType[i] = coins[Bal[i]['coin']]['code'];
     }
-    coinprice(convType, (conv)=>{
+    webapi(Pricehost, Pricepath(ae_cointype,convType), (conv)=>{
       //console.log(conv);
-      var ae_price = conv[ae_cointype]['price'];
       var total = 0;
       for (i=0; i<Bal.length; i++){
         //console.log(Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed']);
-        //console.log(convType[i]);
         //console.log(conv[convType[i]]);
-        total += (Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed'])  
-                /(conv[convType[i]]['price']/ae_price);
+        total += (Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed'])/conv[convType[i]];
       }
       console.log(total);
       callback(total);

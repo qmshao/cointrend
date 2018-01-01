@@ -5,7 +5,7 @@ const webport = 3701;
 const webpath = '/trend/';
 
 const info = require( './app/infoupdate' );
-const DT = 30;
+const DT = 2;
 const MAXLEN = 24*3600/DT;
 
 
@@ -16,7 +16,7 @@ app.get(webpath+"*", function(req, res){
     if (path.indexOf('.')<0){
       path = "index.html";
     }
-    console.log(__dirname +"/public/"+path);
+    //console.log(__dirname +"/public/"+path);
     res.sendFile(__dirname +"/public/"+path);
   });
 
@@ -42,7 +42,7 @@ tData = [];
 xData = [];
 updateData = function(x){
 
-    var t = new Date();
+    var t = new Date() - 0;
     tData.push(t);
     xData.push(x);
 
