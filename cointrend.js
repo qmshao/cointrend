@@ -59,9 +59,10 @@ updateData = function(x){
     
 }
 
-info.getTotalBalance(updateData);
+ae_cointype = "ethereum"//"litecoin";
+info.getTotalBalance(ae_cointype, updateData);
 setInterval(function(){
-  info.getTotalBalance(updateData);
+  info.getTotalBalance(ae_cointype, updateData);
 },DT*1000);
 
 // var csvWriter = require('csv-write-stream')
