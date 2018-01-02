@@ -59,7 +59,7 @@ updateData = function(x){
     
 }
 
-ae_cointype = "ethereum"//"litecoin";
+ae_cointype = ["ethereum","litecoin"];
 info.getTotalBalance(ae_cointype, updateData);
 setInterval(function(){
   info.getTotalBalance(ae_cointype, updateData);

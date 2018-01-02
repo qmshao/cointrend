@@ -16,17 +16,22 @@ var getTotalBalance = function(ae_cointype, callback){
     var convType = [];
     for (i=0; i<Bal.length; i++){
       convType[i] = Bal[i]['coin'];
+      if (convType[i] === 'digibyte-skein'){
+        convType[i] = 'digibyte';
+      }
     }
     coinprice(convType, (conv)=>{
       //console.log(conv);
-      var ae_price = conv[ae_cointype]['price'];
+      var ae_price = conv[ae_cointype[0]]['price'];
       var total = 0;
       for (i=0; i<Bal.length; i++){
         //console.log(Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed']);
         //console.log(convType[i]);
         //console.log(conv[convType[i]]);
-        total += (Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed'])  
-                *(conv[convType[i]]['price']/ae_price);
+        if (convType[i]==ae_cointype[0] | !ae_cointype.includes(convType[i])){
+          total += (Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed'])  
+                  *(conv[convType[i]]['price']/ae_price);
+        }
       }
       //console.log(total);
       callback(total);
