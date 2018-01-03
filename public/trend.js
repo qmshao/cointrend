@@ -4,14 +4,14 @@ window.onload = function() {
 
     var TimeStamp = ""
 
-    var socket = io('',{path: '/trendio/socket.io'});
-    
+    var socket = io('',{path: '/trendio/socket.io', query:"id="+window.location.pathname.replace(/\/trend\//, '')});
+
     socket.on('connected', function (data){
         console.log(data);
         MAXLEN = data;
         socket.emit('ready',TimeStamp);
     });
-    
+
     socket.on('initdata', initPlot);
 
     socket.on('newdata', extendPlot);
