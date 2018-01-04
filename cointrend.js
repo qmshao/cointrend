@@ -5,20 +5,60 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server, {path: '/trendio'});
 
 
+const info = require( './app/infoupdate' );
+const sendmail = require('./app/sendmail');
+
 const webport = 3701;
 const webpath = '/trend/';
-
-const info = require( './app/infoupdate' );
 const DT = 10; //sec
 const WARNINGTIME = 1; //min
 
 const MAXLEN = 24*3600/DT;
 const WARNINGCOUNT =  WARNINGTIME*60/DT;
 
+const ae_lib = ["ethereum","litecoin","vertcoin"];
+var ae_cointype; // = ["ethereum","litecoin"];
+var tData = [];
+var xData = [];
+
+sendmail();
+
+/* Read Auto-Exchange Coins */
+var fileContent = fs.readFileSync('ae.json', "utf8");//
+    obj = JSON.parse(fileContent); //now it an object
+    ae_cointype = obj.ae_cointype;
+    console.log(ae_cointype);
+
 
 /* Express Server */
 app.get(webpath+"*", function(req, res){
     //console.log(req.path);
+    if (Object.keys(req.query).length){
+        if (req.query.hasOwnProperty('ae')){
+            var ae_tmp = req.query['ae'].split(',');
+            var valid = true;
+            ae_tmp.forEach((coin)=>{
+                if (!ae_lib.includes(coin)){
+                    valid = false;
+                }
+            });
+            if (valid){
+                if (ae_cointype[0] != ae_tmp[0]){
+                    tData = [];
+                    xData = [];
+                    io.emit('initdata',{tData:tData, xData,xData});
+                }
+                ae_cointype = ae_tmp;
+                fs.writeFile('ae.json', JSON.stringify({ae_cointype: ae_cointype}), 'utf8',  function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                });
+            }
+            console.log(ae_cointype);
+        }
+    }
+        
     var path = req.path.slice(webpath.length);
     if (path.indexOf('.') < 0) {
         path = "index.html";
@@ -52,8 +92,6 @@ io.on('connection', function (socket) {
 });
 
 
-var tData = [];
-var xData = [];
 var OffCount = 0;
 updateData = function(x){
 
@@ -73,16 +111,15 @@ updateData = function(x){
     } else {
       OffCount ++;
       if (OffCount == WARNINGCOUNT){
-        console.log('Warning!');
+        sendmail();
       } else if (OffCount == 2*WARNINGCOUNT){
-        console.log('DOUBLE Warning!!');
+        sendmail();
       }
     }
     //console.log(OffCount);
 
 }
 
-ae_cointype = ["ethereum","litecoin"];
 info.getTotalBalance(ae_cointype, updateData);
 setInterval(function(){
   info.getTotalBalance(ae_cointype, updateData);
