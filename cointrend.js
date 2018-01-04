@@ -105,8 +105,6 @@ updateData = function(x){
         xData.shift();
     }
 
-    io.emit('newdata',{t:t,x:x,off:OffCount});
-
     if (!minersocket){
       OffCount ++;
       if (OffCount == WARNINGCOUNT){
@@ -115,6 +113,8 @@ updateData = function(x){
         sendmail();
       }
     }
+
+    io.emit('newdata',{t:t,x:x,off:OffCount});
     //console.log(OffCount);
 
 }
