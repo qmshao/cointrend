@@ -10,8 +10,8 @@ const sendmail = require('./app/sendmail');
 
 const webport = 3701;
 const webpath = '/trend/';
-const DT = 10; //sec
-const WARNINGTIME = 1; //min
+const DT = 60; //sec
+const WARNINGTIME = 3; //min
 
 const MAXLEN = 24*3600/DT;
 const WARNINGCOUNT =  WARNINGTIME*60/DT;
@@ -20,6 +20,7 @@ const ae_lib = ["ethereum","litecoin","vertcoin"];
 var ae_cointype; // = ["ethereum","litecoin"];
 var tData = [];
 var xData = [];
+var OffCount = 0;
 
 sendmail();
 
@@ -79,6 +80,7 @@ io.on('connection', function (socket) {
       console.log('miner connected');
       socket.on('disconnect', function(){
         minersocket = undefined;
+        OffCount = 0;
         console.log('miner disconnected');
       });
     } else {
@@ -92,7 +94,6 @@ io.on('connection', function (socket) {
 });
 
 
-var OffCount = 0;
 updateData = function(x){
 
     var t = new Date() - 0;
@@ -104,15 +105,13 @@ updateData = function(x){
         xData.shift();
     }
 
-    io.emit('newdata',{t:t,x:x});
+    io.emit('newdata',{t:t,x:x,off:OffCount});
 
-    if (minersocket){
-      OffCount = 0;
-    } else {
+    if (!minersocket){
       OffCount ++;
       if (OffCount == WARNINGCOUNT){
         sendmail();
-      } else if (OffCount == 2*WARNINGCOUNT){
+      } else if (OffCount == 5*WARNINGCOUNT){
         sendmail();
       }
     }

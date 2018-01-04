@@ -14,7 +14,10 @@ window.onload = function() {
 
     socket.on('initdata', initPlot);
 
-    socket.on('newdata', extendPlot);
+    socket.on('newdata', (data)=>{
+        extendPlot(data);
+        console.log(data.off);
+    });
     // socket.on('data', function (data){
     //     tData = data.tData;
     //     xData = data.xData;
