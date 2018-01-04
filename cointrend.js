@@ -78,9 +78,9 @@ io.on('connection', function (socket) {
     if (id === 'miner'){
       minersocket = socket;
       console.log('miner connected');
+      OffCount = 0;
       socket.on('disconnect', function(){
         minersocket = undefined;
-        OffCount = 0;
         console.log('miner disconnected');
       });
     } else {
@@ -112,6 +112,8 @@ updateData = function(x){
       } else if (OffCount == 5*WARNINGCOUNT){
         sendmail();
       }
+    } else {
+      OffCount = 0;
     }
 
     io.emit('newdata',{t:t,x:x,off:OffCount});
