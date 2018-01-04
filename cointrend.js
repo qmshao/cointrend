@@ -22,8 +22,6 @@ var tData = [];
 var xData = [];
 var OffCount = 0;
 
-sendmail();
-
 /* Read Auto-Exchange Coins */
 var fileContent = fs.readFileSync('ae.json', "utf8");//
     obj = JSON.parse(fileContent); //now it an object
