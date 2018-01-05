@@ -27,7 +27,7 @@ var getTotalBalance = function(ae_cointype, callback){
       for (i=0; i<Bal.length; i++){
         //console.log(Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed']);
         //console.log(convType[i]);
-        //console.log(conv[convType[i]]);
+        if(!conv[convType[i]]) continue;
         if (convType[i]==ae_cointype[0] | !ae_cointype.includes(convType[i])){
           total += (Bal[i]['confirmed'] + Bal[i]['unconfirmed'] + Bal[i]['ae_confirmed'] + Bal[i]['ae_unconfirmed'])  
                   *(conv[convType[i]]['price']/ae_price);
