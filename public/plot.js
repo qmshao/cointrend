@@ -37,15 +37,15 @@ function initPlot(data) {
       rangeselector: {
         buttons: [
           {
-            count: 1,
-            label: '1h',
+            count: 6,
+            label: '6h',
             step: 'hour',
             stepmode: 'backward'
           },
           {
-            count: 6,
-            label: '6h',
-            step: 'hour',
+            count: 1,
+            label: '1d',
+            step: 'day',
             stepmode: 'backward'
           },
           { step: 'all' }

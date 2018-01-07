@@ -11,16 +11,19 @@ const sendmail = require('./app/sendmail');
 const webport = 3701;
 const webpath = '/trend/';
 const DT = 60; //sec
-const WARNINGTIME = 3; //min
+const UPDATETIME = 300;
+const WARNINGTIME = 180; 
 
-const MAXLEN = 24*3600/DT;
-const WARNINGCOUNT =  WARNINGTIME*60/DT;
+const MAXLEN = 7*24*3600/UPDATETIME;
+const MAXWARNINGCOUNT =  WARNINGTIME/DT;
+const MAXUPDATECOUNT = UPDATETIME/DT;
 
 const ae_lib = ["ethereum","litecoin","vertcoin"];
 var ae_cointype; // = ["ethereum","litecoin"];
 var tData = [];
 var xData = [];
-var OffCount = 0;
+var WarningCount = 0;
+var UpdateCount = 0;
 
 /* Read Auto-Exchange Coins */
 var fileContent = fs.readFileSync('ae.json', "utf8");//
@@ -70,15 +73,15 @@ server.listen(webport);
 console.log("Listening on port " + webport +" in path "+webpath);
 
 /* socket.io Server */
-var minersocket;
+var miners = [];
 io.on('connection', function (socket) {
     var id = socket.handshake.query.id;
     if (id === 'miner'){
-      minersocket = socket;
+      miners.push(socket);
       console.log('miner connected');
       OffCount = 0;
       socket.on('disconnect', function(){
-        minersocket = undefined;
+        miners = miners.filter(e => e !== socket);
         console.log('miner disconnected');
       });
     } else {
@@ -91,31 +94,51 @@ io.on('connection', function (socket) {
     });
 });
 
+var RETRY = 0;
+updateData = function(x, err){
 
-updateData = function(x){
-
-    var t = new Date() - 0;
-    tData.push(t);
-    xData.push(x);
-
-    if (tData.length > MAXLEN){
-        tData.shift();
-        xData.shift();
-    }
-
-    if (!minersocket){
-      OffCount ++;
-      if (OffCount == WARNINGCOUNT){
-        sendmail();
-      } else if (OffCount == 5*WARNINGCOUNT){
-        sendmail();
-      }
+    if (err){
+        RETRY++;
+        if (RETRY<=3){
+            info.getTotalBalance(ae_cointype, updateData);
+        }
     } else {
-      OffCount = 0;
+        RETRY = 0;
     }
 
-    io.emit('newdata',{t:t,x:x,off:OffCount});
+    if (miners.length==0){
+        WarningCount ++;
+        if (WarningCount == MAXWARNINGCOUNT){
+          sendmail();
+        } else if (WarningCount == 5*MAXWARNINGCOUNT){
+          sendmail();
+        }
+      } else {
+        WarningCount = 0;
+      }
+
+    if (UpdateCount++ == 0) {
+        var t = new Date() - 0;
+        tData.push(t);
+        xData.push(x);
+
+        if (tData.length > MAXLEN) {
+            tData.shift();
+            xData.shift();
+        }
+
+        io.emit('newdata',{t:t,x:x,off:WarningCount});
+    }
+
+    if (UpdateCount == MAXUPDATECOUNT){
+        UpdateCount = 0;
+    }
+
+
+
     //console.log(OffCount);
+
+    
 
 }
 

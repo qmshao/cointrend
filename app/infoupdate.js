@@ -11,7 +11,10 @@ var MPHpath = function(action){
 
 var getTotalBalance = function(ae_cointype, callback){
   var action = 'getuserallbalances';
-  webapi(MPHhost, MPHpath(action), (res)=>{
+  webapi(MPHhost, MPHpath(action), (res, err)=>{
+    if (err){
+      callback({}, true);
+    }
     var Bal = res[action]['data'];
     var convType = [];
     for (i=0; i<Bal.length; i++){
@@ -34,7 +37,7 @@ var getTotalBalance = function(ae_cointype, callback){
         }
       }
       //console.log(total);
-      callback(total);
+      callback(total, false);
     });
   });
 }

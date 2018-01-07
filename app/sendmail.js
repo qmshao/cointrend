@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
 
 var mailOptions = {
   from: 'qmshao02@gmail.com',
-  to: 'qmshao@gmail.com',
+  to: 'qmshao@gmail.com,qmshao@me.com',
   subject: 'Your Miner is Resting',
   text: 'Get back to work!!!!!!'
 };

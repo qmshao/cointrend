@@ -27,11 +27,12 @@ callWebAPI = function(host, path, callback){
 
     res.on('end', () => {
       var jsonObject = JSON.parse(jsonStr)
-      callback(jsonObject);
+      callback(jsonObject, false);
     });
   });
 
   req.on('error', (e) => {
+    callback({}, true);
     console.error(e);
   });
 
