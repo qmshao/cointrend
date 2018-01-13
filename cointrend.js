@@ -241,8 +241,8 @@ setInterval(function () {
     
     if (now.getUTCHours() === 6){
         var dateStr = now.getFullYear()+('0'+(now.getMonth()+1)).slice(-2)+('0'+now.getDate()).slice(-2);
-        if(!fs.existsSync('./data/data'+dateStr+'.json')){
-            fs.writeFile('./data/data'+dateStr+'.json', JSON.stringify(rtdata), 'utf8', function (err) {
+        if(!fs.existsSync('./data/backup/data'+dateStr+'.json')){
+            fs.writeFile('./data/backup/data'+dateStr+'.json', JSON.stringify(rtdata), 'utf8', function (err) {
                 if (err) {
                     return console.log(err);
                 }
@@ -250,8 +250,8 @@ setInterval(function () {
         }
         
         if (now.getUTCDay() === 0 ){
-            if(!fs.existsSync('./data/credits'+dateStr+'.json')){
-                fs.writeFile('./data/credits'+dateStr+'.json', JSON.stringify({credits:credits}), 'utf8', function (err) {
+            if(!fs.existsSync('./data/backup/credits'+dateStr+'.json')){
+                fs.writeFile('./data/backup/credits'+dateStr+'.json', JSON.stringify({credits:credits}), 'utf8', function (err) {
                     if (err) {
                         return console.log(err);
                     }
