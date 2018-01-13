@@ -1,0 +1,46 @@
+body {
+	padding-top: 20px;
+}
+
+.jumbotron {
+	color: #2c3e50;
+	background-color: #ecf0f1;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+
+.navbar-inverse {
+	background: #2c3e50;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: white;
+}
+
+.navbar-inverse .navbar-brand {
+	color: white;
+}
+
+.plotcontainer {
+	background-color: red;
+	position: relative;
+	width: 100%;
+	padding-top: 56.25%; /* 16:9 Aspect Ratio */
+ }
+
+ .cliente {
+	margin-top:10px;
+	border: #cdcdcd medium solid;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+.info {
+	font-size: 1.2em;
+}
+
+.rangeslider-container{
+	opacity: 0.5;
+}

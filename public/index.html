@@ -4,12 +4,45 @@
   <!-- Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="socket.io/socket.io.js"></script>
-  <!--script src="socket.io.js"></script-->
   <script src="trend.js"></script>
-  <script src="plot.js"></script>
+  <script src="plot.js"></script> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="trend.css">
 </head>
 <body>
 <!-- Plotly chart will be drawn inside this DIV -->
-<div id="PlotDiv"></div>
+<div class="container">
+	<div class="jumbotron">
+		<h1><i class="fa fa-line-chart"></i> Miner Control Room</h1>
+		<p>by qmshao</p>
+    <h2 class="display-2"><span class="label label-default">Machine</span> <span class="label label-default">is</span> <span id='status' class="label label-success">Hard Working...</span> </h2>
+    <!--p id = "ae" class="info">Auto Exchange Coins:</p-->
+	</div>
+
+  <div class="row">
+			<div class="col-lg-6 col-sm-12">
+					<div class="thumbnail">
+							<div id="BalPlotDiv"></div>
+					</div>
+				</div>
+		<div class="col-lg-6 col-sm-12">
+			<div class="thumbnail">
+				<div id="PayPlotDiv"></div>
+			</div>
+		</div>
+		<div class="col-lg-12 col-sm-12">
+			<div class="thumbnail">
+				<div id="CrPlotDiv"></div>
+			</div>
+    </div>
+  </div>
+		
+	</div>
+</div>
+
+<!--script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script-->
+
 </body>
 </html>

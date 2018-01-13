@@ -1,10 +1,14 @@
 var nodemailer = require('nodemailer');
+const fs = require("fs");
+
+fileContent = fs.readFileSync('./data/password.json', "utf8");//
+const password = JSON.parse(fileContent).password;
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'qmshao02@gmail.com',
-    pass: 'whipqq17'
+    pass: password
   }
 });
 

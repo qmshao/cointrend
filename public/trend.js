@@ -1,6 +1,12 @@
-var MAXLEN = 1000000;
+var MAXDAY;
+var PlotDiv = {};
+var CrDiv;
+var ae_cointype;
 
 window.onload = function() {
+    PlotDiv['balance'] = document.getElementById('BalPlotDiv');
+    PlotDiv['payout24'] = document.getElementById('PayPlotDiv');
+    CrDiv = document.getElementById('CrPlotDiv');
 
     var TimeStamp = ""
 
@@ -8,16 +14,23 @@ window.onload = function() {
 
     socket.on('connected', function (data){
         console.log(data);
-        MAXLEN = data;
+        MAXDAY = data;
         socket.emit('ready',TimeStamp);
     });
 
     socket.on('initdata', initPlot);
-
-    socket.on('newdata', (data)=>{
-        extendPlot(data);
-        console.log(data.off);
+    socket.on('credits', creatCreditsPlot);
+    socket.on('status', (working)=>{
+        if (working){
+            document.getElementById("status").className = "label label-success";
+            document.getElementById("status").innerHTML = "Hard Working...";
+        } else {
+            document.getElementById("status").className = "label label-danger";
+            document.getElementById("status").innerHTML = "Resting!!! WTF!!!";
+        }
     });
+
+    socket.on('newdata', extendPlot);
     // socket.on('data', function (data){
     //     tData = data.tData;
     //     xData = data.xData;
