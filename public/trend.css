@@ -22,25 +22,14 @@ body {
 	color: white;
 }
 
-.plotcontainer {
-	background-color: red;
-	position: relative;
-	width: 100%;
-	padding-top: 56.25%; /* 16:9 Aspect Ratio */
- }
-
- .cliente {
-	margin-top:10px;
-	border: #cdcdcd medium solid;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-}
-
 .info {
 	font-size: 1.2em;
 }
 
 .rangeslider-container{
 	opacity: 0.5;
+}
+
+.modebar{
+	display: none !important;
 }

@@ -1,14 +1,19 @@
-var ColorLib = ['#1f77b4',  // muted blue
-  '#ff7f0e',  // safety orange
-  '#2ca02c',  // cooked asparagus green
-  '#d62728',  // brick red
-  '#9467bd',  // muted purple
-  '#8c564b',  // chestnut brown
-  '#e377c2',  // raspberry yogurt pink
-  '#7f7f7f',  // middle gray
-  '#bcbd22',  // curry yellow-green
-  '#17becf'   // blue-teal
-];
+// var ColorLib = ['#1f77b4',  // muted blue
+//   '#ff7f0e',  // safety orange
+//   '#2ca02c',  // cooked asparagus green
+//   '#d62728',  // brick red
+//   '#9467bd',  // muted purple
+//   '#8c564b',  // chestnut brown
+//   '#e377c2',  // raspberry yogurt pink
+//   '#7f7f7f',  // middle gray
+//   '#bcbd22',  // curry yellow-green
+//   '#17becf'   // blue-teal
+// ];
+var ColorLib = {
+  litecoin : '#1f77b4',
+  vertcoin : '#ff7f0e',
+  ethereum : '#2ca02c'
+}
 
 function extendPlot(data) {
   //var plotDiv = document.getElementById('PlotDiv');
@@ -42,7 +47,7 @@ function initPlot(rtdata) {
         name: ae_cointype[i],
         x: rtdata.t,
         y: rtdata[divname][ae_cointype[i]],
-        line: { color: ColorLib[i] }
+        line: { color: ColorLib[ae_cointype[i]] }
       }
       plotdata[i].yaxis = 'y' + (i == 0 ? '' : (i + 1));
     }
@@ -90,7 +95,7 @@ function initPlot(rtdata) {
     for (i = 0; i < LEN; i++) {
       var line = 'yaxis' + (i == 0 ? '' : i + 1);
       layout[line] = {
-        tickfont: { color: ColorLib[i] },
+        tickfont: { color: ColorLib[ae_cointype[i]] },
         rangemode: 'nonnegative',
         autorange: true,
       }
@@ -115,7 +120,7 @@ function creatCreditsPlot(credits){
       name: ae_lib[i],
       x: credits.map(a => a.date),
       y: credits.map(a => a[ae_lib[i]]),
-      line: { color: ColorLib[i] }
+      marker: { color: ColorLib[ae_lib[i]] }
     }
     plotdata[i].yaxis = 'y' + (i == 0 ? '' : (i + 1));
   }
@@ -163,7 +168,7 @@ function creatCreditsPlot(credits){
   for (i = 0; i < LEN; i++) {
     var line = 'yaxis' + (i == 0 ? '' : i + 1);
     layout[line] = {
-      tickfont: { color: ColorLib[i] },
+      tickfont: { color: ColorLib[ae_lib[i]] },
       rangemode: 'nonnegative',
       autorange: true,
     }

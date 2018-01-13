@@ -54,9 +54,8 @@ var updatecredits = function(ae_lib, UPDATEFILE, callback){
         
         
         count ++;
-        if (count == 3) {
-          credits['change'] = change;
-          callback(credits, balance, payout24,false);
+        if (count == ae_lib.length) {
+          callback({ credits: credits , change: change}, balance, payout24,false);
           if (change && UPDATEFILE) {
             fs.writeFile('./data/credits.json', JSON.stringify({ credits: credits }), 'utf8', function (err) {
               if (err) {

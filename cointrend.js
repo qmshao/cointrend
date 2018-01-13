@@ -11,14 +11,14 @@ const updatecredits = require('./app/updatecredits');
 const webport = 3701;
 const webpath = '/trend/';
 const DT = 60; //sec
-const UPDATETIME = 60;//300;
+const UPDATETIME = 600;//300;
 const WARNINGTIME = 120; 
 const MAXDAY = 7;
 const MAXLEN = MAXDAY*24*3600/UPDATETIME;
 const MAXWARNINGCOUNT =  WARNINGTIME/DT;
 const MAXUPDATECOUNT = UPDATETIME/DT;
 
-const ae_lib = ["ethereum","litecoin","vertcoin"];
+var ae_lib;
 var ae_cointype; // = ["ethereum","litecoin"];
 var rtdata;
 var tData = [];
@@ -31,7 +31,7 @@ var credits;
 var aefile = fs.readFileSync('./data/ae.json', "utf8");//
 obj = JSON.parse(aefile); 
 ae_cointype = obj.ae_cointype;
-console.log(ae_cointype);
+ae_lib= obj.ae_lib;
 
 var datafile;
 if(fs.existsSync('./data/data.json')){
@@ -80,11 +80,7 @@ app.get(webpath+"*", function(req, res){
                 }
             });
             if (valid){
-                // if (ae_cointype[0] != ae_tmp[0]){
-                //     tData = [];
-                //     xData = [];
-                //     io.emit('initdata',{tData:tData, xData,xData});
-                // }
+
                 ae_cointype = ae_tmp;
                 if (cleanData()) {
                     io.emit('initdata', rtdata);
@@ -168,8 +164,9 @@ updateData = function (cr, balance, payout24, err) {
     }
     RETRY = 0;
 
-    if (!credits || credits.change){
-        credits = cr;
+    if (!credits || cr.change){
+        console.log(cr);
+        credits = cr.credits;
         io.emit('credits',credits);
     }
     // console.log(balance);
@@ -233,12 +230,34 @@ setInterval(function () {
         UpdateCount = 0;
     }
     // Write Credits
-    if (true) {
+    if (now.getUTCHours() < MAXUPDATECOUNT) {
         fs.writeFile('./data/data.json', JSON.stringify(rtdata), 'utf8', function (err) {
             if (err) {
                 return console.log(err);
             }
         });
+    }
+    // Backup
+    
+    if (now.getUTCHours() === 6){
+        var dateStr = now.getFullYear()+('0'+(now.getMonth()+1)).slice(-2)+('0'+now.getDate()).slice(-2);
+        if(!fs.existsSync('./data/data'+dateStr+'.json')){
+            fs.writeFile('./data/data'+dateStr+'.json', JSON.stringify(rtdata), 'utf8', function (err) {
+                if (err) {
+                    return console.log(err);
+                }
+            });
+        }
+        
+        if (now.getUTCDay() === 0 ){
+            if(!fs.existsSync('./data/credits'+dateStr+'.json')){
+                fs.writeFile('./data/credits'+dateStr+'.json', JSON.stringify({credits:credits}), 'utf8', function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+            }
+        }
     }
 }, DT * 1000);
 
